@@ -38,6 +38,7 @@
             Name = "Form1";
             Text = "Form1";
             Paint += Form1_Paint;
+            KeyPress += Form1_KeyPress;
             ResumeLayout(false);
         }
 
