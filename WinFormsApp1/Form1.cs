@@ -8,7 +8,7 @@ namespace WinFormsApp1
         private System.Windows.Forms.Timer? spawnSnowFlakeTimer;
         private Image snowFlakeImage;
         private Random random;
-        private const int MaxSnowFlakes = 150;
+        private const int MaxSnowFlakes = 100;
         private int currentSnowFlakesCount = 0;
 
         public Form1()
@@ -24,6 +24,9 @@ namespace WinFormsApp1
             random = new Random();
         }
 
+        /// <summary>
+        /// Таймер, определяющий впремя появления новых снежинок
+        /// </summary>
         private void InitSpawnerTimer()
         {
             spawnSnowFlakeTimer = new System.Windows.Forms.Timer();
@@ -31,7 +34,6 @@ namespace WinFormsApp1
             spawnSnowFlakeTimer.Tick += SpawnTimer_Tick;
             spawnSnowFlakeTimer.Start();
         }
-
         private void SpawnTimer_Tick(object? sender, EventArgs e)
         {
             if (currentSnowFlakesCount < MaxSnowFlakes)
@@ -54,11 +56,13 @@ namespace WinFormsApp1
                 SizeType = random.Next(0, 2) == 0 ? SnowFlakeSize.Small : SnowFlakeSize.Large
             });
         }
-
+        /// <summary>
+        /// Основной таймер приложения
+        /// </summary>
         private void InitTimer()
         {
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 30;
+            timer.Interval = 60;
             timer.Tick += Timer_Tick;
             timer.Start();
         }
@@ -67,7 +71,7 @@ namespace WinFormsApp1
         {
             foreach (var flake in snowFlakesList)
             {
-                float speed = flake.SizeType == SnowFlakeSize.Large ? 0.8f : 1.2f;
+                float speed = flake.SizeType == SnowFlakeSize.Large ? 4.0f : 2.0f;
                 flake.Y += speed;
                 flake.X += (float)(Math.Sin(flake.Y * 0.01) * 0.3);
                 if (flake.Y > Height)
