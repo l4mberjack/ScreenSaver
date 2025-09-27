@@ -10,7 +10,11 @@ namespace WinFormsApp1
         private Random random;
         private const int MaxSnowFlakes = 100;
         private int currentSnowFlakesCount = 0;
+        Image scene;
 
+        /// <summary>
+        /// Главная форма
+        /// </summary>
         public Form1()
         {
             InitializeComponent();
@@ -19,14 +23,10 @@ namespace WinFormsApp1
             snowFlakeImage = Properties.Resources.SnowFlake;
             InitTimer();
             InitSpawnerTimer();
-            DoubleBuffered = true;
             mainPic = PickMainPicture();
             random = new Random();
         }
 
-        /// <summary>
-        /// Таймер, определяющий впремя появления новых снежинок
-        /// </summary>
         private void InitSpawnerTimer()
         {
             spawnSnowFlakeTimer = new System.Windows.Forms.Timer();
@@ -43,7 +43,7 @@ namespace WinFormsApp1
             }
             else
             {
-                spawnSnowFlakeTimer.Stop();
+                spawnSnowFlakeTimer?.Stop();
             }
         }
 
@@ -51,18 +51,15 @@ namespace WinFormsApp1
         {
             snowFlakesList.Add(new SnowFlake
             {
-                X = random.Next(0, Width),
+                X = random.Next(50, Width - 100),
                 Y = random.Next(-100, 0),
                 SizeType = random.Next(0, 2) == 0 ? SnowFlakeSize.Small : SnowFlakeSize.Large
             });
         }
-        /// <summary>
-        /// Основной таймер приложения
-        /// </summary>
         private void InitTimer()
         {
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 60;
+            timer.Interval = 80;
             timer.Tick += Timer_Tick;
             timer.Start();
         }
@@ -73,20 +70,20 @@ namespace WinFormsApp1
             {
                 float speed = flake.SizeType == SnowFlakeSize.Large ? 4.0f : 2.0f;
                 flake.Y += speed;
-                flake.X += (float)(Math.Sin(flake.Y * 0.01) * 0.3);
+                flake.X += (float)(Math.Sin(flake.Y * 0.02) * 0.3);
                 if (flake.Y > Height)
                 {
                     flake.Y = random.Next(-50, -10);
                     flake.X = random.Next(Width);
                 }
             }
-            Invalidate();
+
+            Form1_Paint(this, new PaintEventArgs(CreateGraphics(), ClientRectangle));
         }
 
         /// <summary>
         /// Метод выбора фоновой картинки по времени
         /// </summary>
-        /// <returns>Image</returns>
         public Image PickMainPicture()
         {
             DateTime timeNow = DateTime.Now;
@@ -97,28 +94,25 @@ namespace WinFormsApp1
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
-            g.DrawImage(mainPic, ClientRectangle);
+            scene = new Bitmap(Width, Height);
+            var bg = Graphics.FromImage(scene);
+            bg.DrawImage(mainPic, 0, 0, Width, Height);
+
             foreach (var flake in snowFlakesList)
             {
-                int width, height;
-                if (flake.SizeType == SnowFlakeSize.Small)
-                {
-                    width = 30;
-                    height = 20;
-                }
-                else
-                {
-                    width = 100;
-                    height = 70;
-                }
+                int width = flake.SizeType == SnowFlakeSize.Small ? 30 : 100;
+                int height = flake.SizeType == SnowFlakeSize.Small ? 20 : 70;
 
-                g.DrawImage(snowFlakeImage, new Rectangle((int)flake.X, (int)flake.Y, width, height));
+                bg.DrawImage(snowFlakeImage, new Rectangle((int)flake.X, (int)flake.Y, width, height));
             }
 
+            e.Graphics.DrawImage(scene, Point.Empty);
         }
 
-        private void Form1_KeyPress(object sender, KeyPressEventArgs e) => Close();
-
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            timer?.Stop();
+            Close();
+        }
     }
 }
