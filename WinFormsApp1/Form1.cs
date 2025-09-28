@@ -10,7 +10,7 @@ namespace WinFormsApp1
         private Random random;
         private const int MaxSnowFlakes = 100;
         private int currentSnowFlakesCount = 0;
-        Image scene;
+        Image? scene;
 
         /// <summary>
         /// Главная форма
@@ -25,6 +25,7 @@ namespace WinFormsApp1
             InitSpawnerTimer();
             mainPic = PickMainPicture();
             random = new Random();
+            scene = new Bitmap(1, 1);
         }
 
         private void InitSpawnerTimer()
@@ -94,7 +95,12 @@ namespace WinFormsApp1
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            scene = new Bitmap(Width, Height);
+            if (scene == null || scene.Width != Width || scene.Height != Height)
+            {
+                scene.Dispose();
+                scene = new Bitmap(Width, Height);
+            }
+
             var bg = Graphics.FromImage(scene);
             bg.DrawImage(mainPic, 0, 0, Width, Height);
 
