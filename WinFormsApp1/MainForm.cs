@@ -1,6 +1,6 @@
 ﻿namespace ScreenSaver
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private Image mainPic;
         private List<SnowFlake> snowFlakesList = new();
@@ -15,7 +15,7 @@
         /// <summary>
         /// Главная форма
         /// </summary>
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.None;
