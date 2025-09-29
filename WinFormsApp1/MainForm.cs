@@ -35,6 +35,7 @@
             spawnSnowFlakeTimer.Tick += SpawnTimer_Tick;
             spawnSnowFlakeTimer.Start();
         }
+
         private void SpawnTimer_Tick(object? sender, EventArgs e)
         {
             if (currentSnowFlakesCount < MaxSnowFlakes)
@@ -57,6 +58,7 @@
                 SizeType = random.Next(0, 2) == 0 ? SnowFlakeSize.Small : SnowFlakeSize.Large
             });
         }
+
         private void InitTimer()
         {
             timer = new System.Windows.Forms.Timer();
@@ -95,7 +97,6 @@
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            Form1_ResizeEnd(sender, e);
             var bg = Graphics.FromImage(scene);
             bg.DrawImage(mainPic, 0, 0, Width, Height);
 
@@ -118,11 +119,13 @@
 
         private void Form1_ResizeEnd(object sender, EventArgs e)
         {
-            if (scene?.Width != Width || scene.Height != Height)
-            {
-                scene?.Dispose();
-                scene = new Bitmap(Width, Height);
-            }
+            scene?.Dispose();
+            scene = new Bitmap(Width, Height);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            scene = new Bitmap(Width, Height);
         }
     }
 }
