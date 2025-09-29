@@ -4,8 +4,8 @@
     {
         private Image mainPic;
         private List<SnowFlake> snowFlakesList = new();
-        private System.Windows.Forms.Timer? timer;
-        private System.Windows.Forms.Timer? spawnSnowFlakeTimer;
+        private System.Windows.Forms.Timer timer = null!;
+        private System.Windows.Forms.Timer spawnSnowFlakeTimer = null!;
         private Image snowFlakeImage;
         private Random random;
         private const int MaxSnowFlakes = 100;
@@ -113,13 +113,13 @@
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            timer?.Stop();
+            timer.Stop();
             Close();
         }
 
         private void Form1_ResizeEnd(object sender, EventArgs e)
         {
-            scene?.Dispose();
+            scene.Dispose();
             scene = new Bitmap(Width, Height);
         }
 
