@@ -1,4 +1,4 @@
-namespace WinFormsApp1
+﻿namespace ScreenSaver
 {
     internal static class Program
     {

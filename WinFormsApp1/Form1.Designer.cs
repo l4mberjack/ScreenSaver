@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp1
+﻿namespace ScreenSaver
 {
     partial class Form1
     {
@@ -37,6 +37,7 @@
             ClientSize = new Size(800, 450);
             Name = "Form1";
             Text = "Form1";
+            ResizeEnd += Form1_ResizeEnd;
             Paint += Form1_Paint;
             KeyPress += Form1_KeyPress;
             ResumeLayout(false);

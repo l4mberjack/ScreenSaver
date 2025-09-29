@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp1;
+﻿namespace ScreenSaver;
 public enum SnowFlakeSize
 {
     Small,

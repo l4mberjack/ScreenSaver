@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <CodePage>65001</CodePage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,5 +28,4 @@
   <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
-
 </Project>

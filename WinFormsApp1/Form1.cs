@@ -1,8 +1,8 @@
-namespace WinFormsApp1
+п»їnamespace ScreenSaver
 {
     public partial class Form1 : Form
     {
-        private Image? mainPic;
+        private Image mainPic;
         private List<SnowFlake> snowFlakesList = new();
         private System.Windows.Forms.Timer? timer;
         private System.Windows.Forms.Timer? spawnSnowFlakeTimer;
@@ -10,10 +10,10 @@ namespace WinFormsApp1
         private Random random;
         private const int MaxSnowFlakes = 100;
         private int currentSnowFlakesCount = 0;
-        Image? scene;
+        Image scene;
 
         /// <summary>
-        /// Главная форма
+        /// Р“Р»Р°РІРЅР°СЏ С„РѕСЂРјР°
         /// </summary>
         public Form1()
         {
@@ -69,7 +69,7 @@ namespace WinFormsApp1
         {
             foreach (var flake in snowFlakesList)
             {
-                float speed = flake.SizeType == SnowFlakeSize.Large ? 4.0f : 2.0f;
+                var speed = flake.SizeType == SnowFlakeSize.Large ? 4.0f : 2.0f;
                 flake.Y += speed;
                 flake.X += (float)(Math.Sin(flake.Y * 0.02) * 0.3);
                 if (flake.Y > Height)
@@ -83,11 +83,11 @@ namespace WinFormsApp1
         }
 
         /// <summary>
-        /// Метод выбора фоновой картинки по времени
+        /// РњРµС‚РѕРґ РІС‹Р±РѕСЂР° С„РѕРЅРѕРІРѕР№ РєР°СЂС‚РёРЅРєРё РїРѕ РІСЂРµРјРµРЅРё
         /// </summary>
         public Image PickMainPicture()
         {
-            DateTime timeNow = DateTime.Now;
+            var timeNow = DateTime.Now;
             return (timeNow.Hour >= 7 && timeNow.Hour < 18)
             ? Properties.Resources.DayDerevnya
             : Properties.Resources.NightDerevnya;
@@ -95,19 +95,14 @@ namespace WinFormsApp1
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            if (scene == null || scene.Width != Width || scene.Height != Height)
-            {
-                scene.Dispose();
-                scene = new Bitmap(Width, Height);
-            }
-
+            Form1_ResizeEnd(sender, e);
             var bg = Graphics.FromImage(scene);
             bg.DrawImage(mainPic, 0, 0, Width, Height);
 
             foreach (var flake in snowFlakesList)
             {
-                int width = flake.SizeType == SnowFlakeSize.Small ? 30 : 100;
-                int height = flake.SizeType == SnowFlakeSize.Small ? 20 : 70;
+                var width = flake.SizeType == SnowFlakeSize.Small ? 30 : 100;
+                var height = flake.SizeType == SnowFlakeSize.Small ? 20 : 70;
 
                 bg.DrawImage(snowFlakeImage, new Rectangle((int)flake.X, (int)flake.Y, width, height));
             }
@@ -119,6 +114,15 @@ namespace WinFormsApp1
         {
             timer?.Stop();
             Close();
+        }
+
+        private void Form1_ResizeEnd(object sender, EventArgs e)
+        {
+            if (scene?.Width != Width || scene.Height != Height)
+            {
+                scene?.Dispose();
+                scene = new Bitmap(Width, Height);
+            }
         }
     }
 }
